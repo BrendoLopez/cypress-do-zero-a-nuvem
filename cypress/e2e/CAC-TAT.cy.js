@@ -136,7 +136,7 @@ describe("Central de Atendimento ao Cliente TAT", () => {
     cy.get(".success").should("be.visible");
   });
 
-  it.only("identificando elementos com a funcionalidade cy.contains()", () => {
+  it("identificando elementos com a funcionalidade cy.contains()", () => {
     cy.contains('button', 'Enviar').click()
     cy.contains('strong', 'Valide os campos obrigatórios!').should('be.visible')
   });
