@@ -124,15 +124,20 @@ describe("Central de Atendimento ao Cliente TAT", () => {
     cy.get(".error").should("be.visible");
   });
 
-  it.only("envia o formuário com sucesso usando um comando customizado", () => {
+  it("envia o formuário com sucesso usando um comando customizado", () => {
     const data = {
-      firstName: 'Brendo',
-      lastName: 'Lopes',
-      email: 'brendoslopes@gmail.com',
-      text: 'Teste'
-    }
+      firstName: "Brendo",
+      lastName: "Lopes",
+      email: "brendoslopes@gmail.com",
+      text: "Teste",
+    };
     cy.fillMandatoryFieldsAndSubmit(data);
 
     cy.get(".success").should("be.visible");
+  });
+
+  it.only("identificando elementos com a funcionalidade cy.contains()", () => {
+    cy.contains('button', 'Enviar').click()
+    cy.contains('strong', 'Valide os campos obrigatórios!').should('be.visible')
   });
 });
