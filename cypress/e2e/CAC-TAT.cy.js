@@ -138,20 +138,25 @@ describe("Central de Atendimento ao Cliente TAT", () => {
 
   it("identificando elementos com a funcionalidade cy.contains()", () => {
     cy.contains("button", "Enviar").click();
-    cy.contains("strong", "Valide os campos obrigatórios!").should(
-      "be.visible"
-    );
+    cy.contains("strong", "Valide os campos obrigatórios!").should("be.visible");
   });
 
   it("seleciona um produto (YouTube) por seu texto", () => {
-    cy.get("#product").select("YouTube").should('have.value', "youtube")
+    cy.get("#product").select("YouTube").should("have.value", "youtube");
   });
 
-  it('seleciona um produto (Mentoria) por seu valor (value)', () =>{
-    cy.get('#product').select('mentoria').should('have.value', "mentoria")
-  })
+  it("seleciona um produto (Mentoria) por seu valor (value)", () => {
+    cy.get("#product").select(["mentoria"]).should("have.value", "mentoria");
+    // É possível também passar um array dentro do select para caso seja um select de multipla seleção.
+  });
 
-  it.only('seleciona um produto (Blog) por seu índice', () =>{
-    cy.get("#product").select(1).should('have.value', "blog")
+  it("seleciona um produto (Blog) por seu índice", () => {
+    cy.get("#product").select(1).should("have.value", "blog");
+  });
+
+  it.only('marca o tipo de atendimento "Feedback"', () =>{
+    cy.get('[type="radio"][value="elogio"]').check().should('have.value', "elogio")
+    // cy.get('[name="atendimento-tat"]').check("feedback").should('have.value', "feedback")
+    // Segund cenário para selecionar button radio
   })
 });
