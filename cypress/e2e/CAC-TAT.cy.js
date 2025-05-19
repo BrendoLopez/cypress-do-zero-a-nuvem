@@ -154,9 +154,13 @@ describe("Central de Atendimento ao Cliente TAT", () => {
     cy.get("#product").select(1).should("have.value", "blog");
   });
 
-  it.only('marca o tipo de atendimento "Feedback"', () =>{
+  it('marca o tipo de atendimento "Feedback"', () =>{
     cy.get('[type="radio"][value="elogio"]').check().should('have.value', "elogio")
     // cy.get('[name="atendimento-tat"]').check("feedback").should('have.value', "feedback")
     // Segund cenário para selecionar button radio
   })
+
+  it('', () => {
+    
+  });
 });
