@@ -138,7 +138,9 @@ describe("Central de Atendimento ao Cliente TAT", () => {
 
   it("identificando elementos com a funcionalidade cy.contains()", () => {
     cy.contains("button", "Enviar").click();
-    cy.contains("strong", "Valide os campos obrigatórios!").should("be.visible");
+    cy.contains("strong", "Valide os campos obrigatórios!").should(
+      "be.visible"
+    );
   });
 
   it("seleciona um produto (YouTube) por seu texto", () => {
@@ -154,13 +156,18 @@ describe("Central de Atendimento ao Cliente TAT", () => {
     cy.get("#product").select(1).should("have.value", "blog");
   });
 
-  it.only('marca o tipo de atendimento "Feedback"', () =>{
-    cy.get('[type="radio"][value="elogio"]').check().should('have.value', "elogio")
-    // cy.get('[name="atendimento-tat"]').check("feedback").should('have.value', "feedback")
-    // Segund cenário para selecionar button radio
-  })
+  it('marca o tipo de atendimento "Feedback"', () => {
+    //cy.get('[type="radio"][value="elogio"]').check().should('have.value', "elogio")
+    cy.get('[name="atendimento-tat"]')
+      .check("feedback")
+      .should("have.value", "feedback");
+    // Segundo cenário é o mais usado para selecionar button radio.
+  });
 
-  it('', () => {
-    
+  it.only("marca cada tipo de atendimento", () => {
+    cy.get('input[type="radio"]').each(($el) => {
+      cy.wrap($el).check().should("be.checked");
+      cy.wait(500);
+    });
   });
 });
