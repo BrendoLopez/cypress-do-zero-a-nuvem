@@ -1,4 +1,5 @@
 /// <reference types="cypress" />
+
 describe("Central de Atendimento ao Cliente TAT", () => {
   beforeEach(() => {
     cy.visit("./src/index.html");
@@ -164,10 +165,82 @@ describe("Central de Atendimento ao Cliente TAT", () => {
     // Segundo cenário é o mais usado para selecionar button radio.
   });
 
-  it.only("marca cada tipo de atendimento", () => {
+  it("marca cada tipo de atendimento", () => {
     cy.get('input[type="radio"]').each(($el) => {
       cy.wrap($el).check().should("be.checked");
       cy.wait(500);
+      // Inserido um delay em cada radio marcado para visualizar melhor os testes;
+    });
+  });
+
+  it("marca ambos checkboxes, depois desmarca o último", () => {
+    cy.get('input[type="checkbox"]')
+      .check()
+      .should("be.checked")
+      .last()
+      .uncheck()
+      .should("not.be.checked");
+  });
+
+  it("exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário", () => {
+    cy.get("#firstName")
+      .should("exist")
+      .and("be.visible")
+      .type("Brendo")
+      .should("have.value", "Brendo");
+
+    cy.get("#lastName")
+      .should("exist")
+      .and("be.visible")
+      .type("Lopes")
+      .should("have.value", "Lopes");
+
+    cy.get("#email")
+      .should("exist")
+      .and("be.visible")
+      .type("brendo@gmail.com")
+      .should("have.value", "brendo@gmail.com");
+
+    cy.get("#phone-checkbox").should("exist").and("be.visible").check();
+
+    cy.get(".button").should("exist").and("be.visible").click();
+
+    cy.get(".error").should("exist").and("be.visible");
+  });
+
+  it("seleciona um arquivo da pasta fixtures", () => {
+    cy.get("#file-upload").selectFile("cypress/fixtures/example.json");
+
+    // Cenário com dois tipos de verificação de upload de arquivos.
+    cy.get("#file-upload").then(($input) => {
+      const files = $input[0].files;
+      expect(files[0].name).to.equal("example.json");
+    });
+
+    cy.get("#file-upload").should((input) => {
+      expect(input[0].files[0].name).to.equal("example.json");
+    });
+  });
+
+  // Teste com drag-and-drop "Arrasta e solta".
+  it('seleciona um arquivo simulando um drag-and-drop', () => {
+     cy.get("#file-upload").selectFile("cypress/fixtures/example.json", { action: 'drag-drop'});
+
+    // Cenário com dois tipos de verificação de upload de arquivos.
+    cy.get("#file-upload").then(($input) => {
+      const files = $input[0].files;
+      expect(files[0].name).to.equal("example.json");
+    });
+
+    cy.get("#file-upload").should((input) => {
+      expect(input[0].files[0].name).to.equal("example.json");
+    });
+  });
+
+  it('seleciona um arquivo utilizando uma fixture para a qual foi dada um alias', () => {
+    cy.fixture("example.json").as('sampleFile')
+    cy.get("#file-upload").selectFile("@sampleFile").should((input) => {
+      expect(input[0].files[0].name).to.equal("example.json");
     });
   });
 });
